@@ -18,3 +18,6 @@ public class movieListModelImp implements MovieListContract.Model {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }
+
+
+

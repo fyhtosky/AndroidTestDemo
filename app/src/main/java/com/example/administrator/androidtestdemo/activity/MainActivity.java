@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.administrator.androidtestdemo.R;
 import com.example.administrator.androidtestdemo.tool.BitmapTools;
 import com.example.logger.Logger;
+import com.example.network_sdk.test.Test1;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int OPEN_CAMERA = 2;
     //启动相册的标示
     public final static int REQUEST_CAMERA = 1;
+    private Test1 test1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         Logger.d("MainActivity.onCreate()");
+        test1=new Test1();
+        test1.initObservable(MainActivity.this);
+//        test1.initObserverableOne(MainActivity.this);
     }
 
 
