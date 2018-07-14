@@ -29,7 +29,7 @@ public class GankActivity extends BaseActivity<GankListModelImp, GankListPresent
     RecyclerView recyclerView;
 
     private GankAdapter gankAdapter;
-    private static final String GANK_URL = "http://gank.io/api/data/福利/50/1";
+    private static final String GANK_URL = "http://gank.io/api/data/福利/5000/1";
 
     @Override
     protected int getLayoutId() {
