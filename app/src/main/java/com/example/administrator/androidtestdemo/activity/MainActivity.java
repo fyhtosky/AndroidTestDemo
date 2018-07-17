@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.tv_demo,R.id.bt_start_movie,R.id.bt_start_gank})
+    @OnClick({R.id.tv_demo,R.id.bt_start_movie,R.id.bt_start_gank,R.id.bt_start_image})
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.tv_demo:
@@ -199,6 +199,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case  R.id.bt_start_gank:
                 startActivity(new Intent(MainActivity.this,GankActivity.class));
+                break;
+            case R.id.bt_start_image:
+                startActivity(new Intent(MainActivity.this,FrescoDemoActivity.class));
                 break;
         }
 

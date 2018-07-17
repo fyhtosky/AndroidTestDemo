@@ -41,7 +41,8 @@
         </provider>
 
         <activity android:name=".activity.MovieActivity" />
-        <activity android:name=".activity.GankActivity"></activity>
+        <activity android:name=".activity.GankActivity" />
+        <activity android:name=".activity.FrescoDemoActivity"></activity>
     </application>
 
 </manifest>
