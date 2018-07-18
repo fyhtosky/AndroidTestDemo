@@ -18,6 +18,13 @@ android {
 
     }
 
+    task out{
+        doLast{
+            println 'helloword'
+        }
+    }
+
+
 }
 
 dependencies {
