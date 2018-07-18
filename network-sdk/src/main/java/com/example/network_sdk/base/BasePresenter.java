@@ -15,13 +15,13 @@ import rx.subscriptions.CompositeSubscription;
  * @param <M>
  */
 public class BasePresenter<V extends BaseView,M extends BaseModel> implements Presenter<V,M> {
-    protected Context mContext;
+    public Context mContext;
     protected V mView;
     protected M mModel;
 
     protected CompositeSubscription mCompositeSubscription;
 
-    protected void unSubscribe(){
+    public void unSubscribe(){
         if(mCompositeSubscription!=null){
             mCompositeSubscription.unsubscribe();
         }

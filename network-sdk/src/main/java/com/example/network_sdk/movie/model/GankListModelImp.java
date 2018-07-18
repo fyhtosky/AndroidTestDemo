@@ -19,4 +19,5 @@ public class GankListModelImp implements GankListContract.Model {
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
 }

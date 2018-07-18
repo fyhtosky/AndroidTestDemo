@@ -2,6 +2,7 @@ package com.example.administrator.androidtestdemo.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 
 import com.example.Imp.AndroidLogAdapter;
@@ -11,6 +12,7 @@ import com.example.Imp.PrettyFormatStrategy;
 import com.example.administrator.androidtestdemo.BuildConfig;
 import com.example.logger.Logger;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.squareup.leakcanary.LeakCanary;
 
 
 public class MyApp extends Application {
@@ -22,7 +24,21 @@ public class MyApp extends Application {
         initLogStore();
         //图片加载
         Fresco.initialize(AppContext);
+        setupLeakCanary();
     }
+
+    /**
+     * 初始化LeakCanary
+     */
+    private void setupLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+    }
+
 
     /**
      * 初始化日志库

@@ -1,8 +1,13 @@
-package com.example.network_sdk.base;
+package com.example.administrator.androidtestdemo.activity.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
+import com.example.network_sdk.base.BaseModel;
+import com.example.network_sdk.base.BasePresenter;
+import com.example.network_sdk.base.BaseView;
+import com.example.network_sdk.base.ContractProxy;
 
 public  abstract class BaseActivity<M extends BaseModel,P extends BasePresenter> extends AppCompatActivity {
 

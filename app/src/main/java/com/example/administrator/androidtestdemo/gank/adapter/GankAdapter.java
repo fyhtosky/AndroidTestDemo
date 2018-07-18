@@ -1,5 +1,6 @@
 package com.example.administrator.androidtestdemo.gank.adapter;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.example.administrator.androidtestdemo.R;
 import com.example.network_sdk.movie.bean.GankEntry;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -36,12 +38,17 @@ public class GankAdapter extends RecyclerView.Adapter {
         GankEntry entry = mGankEntries.get(position);
 
         Uri uri =  Uri.parse(entry.getUrl());
+//        RoundingParams roundingParams = RoundingParams.fromCornersRadius(4f);
+//        roundingParams.setBorder(Color.RED, 1.0f);
+//        roundingParams.setRoundAsCircle(true);
+
 
         DraweeController controller = Fresco.newDraweeControllerBuilder()
                 .setUri(uri)
                 .setAutoPlayAnimations(true)
                 .build();
         viewHolder.mImageView.setController(controller);
+//        viewHolder.mImageView.getHierarchy().setRoundingParams(roundingParams);
         viewHolder.descText.setText(entry.getDesc());
         viewHolder.authorText.setText(entry.getWho());
     }

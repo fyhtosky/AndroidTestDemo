@@ -16,4 +16,7 @@ public interface GankApi {
      */
     @GET
     Observable<GankResp> getGank(@Url String url/*, @Path("count")int count,@Path("page")int page*/);
+
+
+
 }

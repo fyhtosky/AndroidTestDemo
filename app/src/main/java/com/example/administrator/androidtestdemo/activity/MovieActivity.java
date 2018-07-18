@@ -1,7 +1,6 @@
 package com.example.administrator.androidtestdemo.activity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -12,7 +11,7 @@ import android.widget.Toast;
 import com.example.administrator.androidtestdemo.R;
 import com.example.administrator.androidtestdemo.moive.adapter.MovieAdapter;
 import com.example.administrator.androidtestdemo.moive.decoration.MovieDecoration;
-import com.example.network_sdk.base.BaseActivity;
+import com.example.administrator.androidtestdemo.activity.base.BaseActivity;
 import com.example.network_sdk.base.BaseView;
 import com.example.network_sdk.movie.bean.MovieSubject;
 import com.example.network_sdk.movie.interfaces.MovieListContract;
