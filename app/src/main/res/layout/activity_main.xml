@@ -30,5 +30,11 @@
          android:layout_height="wrap_content"
          android:text="启动福利列表界面"/>
 
+     <Button
+         android:id="@+id/bt_start_image"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="启动图片加载界面"/>
+
 
 </LinearLayout>
