@@ -9,22 +9,98 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
 
+        }
     }
-
-    task out{
-        doLast{
+//配置自定义打包名称
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def fileName
+            def formattedDate = new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
+            if (variant.buildType.name.equals('release')) {
+                fileName = "${variant.mergedFlavor.versionName}_release_${formattedDate}.apk"
+            } else if (variant.buildType.name.equals('debug')) {
+                fileName = "${variant.mergedFlavor.versionName}_debug_${formattedDate}.apk"
+            }
+            outputFileName = fileName;
+        }
+    }
+    /**
+     * Gradle语法学习
+     */
+    task out {
+        doLast {
             println 'helloword'
         }
     }
+    task showDescription1 << {
+        description = 'this is task showDescription'
+        println description
+    }
 
 
+
+    task showDescription2 << {
+        println description
+    }
+    showDescription2.description = 'this is task showDescription'
+
+
+    task showDescription3 << {
+        println description
+    }
+
+    showDescription3 {
+        description = 'this is task showDescription'
+    }
+    task outBeanNmae << {
+        def bean = new GroovyBeanExample();
+        bean.name = "this is name";
+        println bean.name;
+    }
+
+    productFlavors {
+
+    }
+    task printList {
+        def list = [1, "2", 3.0, '4']
+        list.each {
+            println it //使用迭代器遍历list集合
+        }
+    }
+    task printMap {
+        def map = ['name': "张三", 'age': 23]
+        map.each {
+            println "Key:${it.key}, value: ${it.value}"
+        }
+
+    }
+
+    task task1 << {
+        println 'task1'
+    }
+    task task2 << {//注意task1 和 task2要放在task3上边, 要不然会找不到
+        println 'task2'
+    }
+    task task3 { //gradle -q task3 运行task3
+        dependsOn task1, task2
+        doLast {
+            println 'task3'
+        }
+    }
+
+}
+
+class GroovyBeanExample {
+    private String name
 }
 
 dependencies {
@@ -33,22 +109,28 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
     //butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
     //权限
     implementation('com.github.hotchemi:permissionsdispatcher:3.2.0') {
         // if you don't use android.app.Fragment you can exclude support for them
         exclude module: "support-v13"
     }
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.2.0"
+
     //日志库
+
     //    implementation 'com.orhanobut:logger:2.2.0'
     implementation project(':logger')
     implementation project(':network-sdk')
     implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
+
     //图片框架
     implementation 'com.facebook.fresco:fresco:0.12.0'
     implementation 'com.facebook.fresco:imagepipeline-okhttp3:0.12.0'
@@ -56,6 +138,4 @@ dependencies {
     //leakcanary内存泄漏工具
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
-
-
 }

@@ -32,7 +32,7 @@ public  abstract class BaseActivity<M extends BaseModel,P extends BasePresenter>
         return (Class<M>) ContractProxy.getModelClazz(getClass(), 0);
     }
 
-    //    获得抽取接口Presenter对象
+    /* 获得抽取接口Presenter对象 */
     protected Class getPresenterClazz() {
         return (Class<P>) ContractProxy.getPresnterClazz(getClass(), 1);
     }
