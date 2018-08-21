@@ -5,7 +5,8 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.administrator.diycode.activity.DiycodeMainActivity">
+    tools:context="com.example.administrator.diycode.activity.DiycodeMainActivity"
+    tools:openDrawer="start">
     <include
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"
@@ -14,6 +15,7 @@
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer"
