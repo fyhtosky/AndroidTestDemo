@@ -135,7 +135,7 @@ public class DiycodeMainActivity extends AppCompatActivity {
                     openActivity(GankActivity.class);
                    return true;
                 } else if (id == R.id.nav_about) {
-                    openActivity(MainActivity.class);
+                    openActivity(AudioActivity.class);
                 } else if (id == R.id.nav_setting) {
                     openActivity(MainActivity.class);
                 }
