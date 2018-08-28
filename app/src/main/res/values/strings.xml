@@ -3,4 +3,7 @@
     <string name="open_carmera">开启相机</string>
     <string name="movie_list">电影列表</string>
     <string name="award_list">福利列表</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="scale_down_show_behavior">com.example.administrator.diycode.behavior.ScaleDownShowBehavior</string>
 </resources>

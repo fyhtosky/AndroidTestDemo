@@ -25,11 +25,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <provider
@@ -45,7 +45,13 @@
         <activity android:name=".activity.MovieActivity" />
         <activity android:name=".activity.GankActivity" />
         <activity android:name=".activity.FrescoDemoActivity" />
-        <activity android:name="com.example.administrator.diycode.activity.DiycodeMainActivity"></activity>
+        <activity android:name="com.example.administrator.diycode.activity.DiycodeMainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
