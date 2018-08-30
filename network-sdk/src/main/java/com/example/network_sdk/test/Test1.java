@@ -96,4 +96,5 @@ public class Test1 {
         observable.subscribe(initOne(context));
     }
 
+
 }

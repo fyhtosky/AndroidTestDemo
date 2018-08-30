@@ -29,6 +29,7 @@ import com.example.administrator.androidtestdemo.R;
 import com.example.administrator.androidtestdemo.activity.GankActivity;
 import com.example.administrator.androidtestdemo.activity.MainActivity;
 import com.example.administrator.androidtestdemo.activity.MovieActivity;
+import com.example.administrator.androidtestdemo.manager.PackageInfoManager;
 import com.example.administrator.diycode.fragment.GankFragment;
 import com.example.administrator.diycode.fragment.MoiveFragment;
 
@@ -137,7 +138,8 @@ public class DiycodeMainActivity extends AppCompatActivity {
                 } else if (id == R.id.nav_about) {
                     openActivity(AudioActivity.class);
                 } else if (id == R.id.nav_setting) {
-                    openActivity(MainActivity.class);
+//                    openActivity(MainActivity.class);
+                    PackageInfoManager.startThridApp(DiycodeMainActivity.this,"com.wisemen.hhb");
                 }
 
                 drawerLayout.closeDrawer(GravityCompat.START);
