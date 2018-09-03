@@ -4,6 +4,7 @@ import android.Manifest;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -24,6 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,6 +68,8 @@ public class AudioActivity extends BaseActivity implements MediaPlayer.OnComplet
     @BindView(R.id.player_sb_progress)
     SeekBar rPlayerSbProgress;
     private MediaRecorder mediaRecorder;
+    private Timer mTimer;
+    private TimerTask mTimerTask;
     //录音器状态
     private int currentRecordState = RECORD_STATE_INIT;
     //播放器状态
@@ -96,6 +101,9 @@ public class AudioActivity extends BaseActivity implements MediaPlayer.OnComplet
                     tvTime.setText(formatTime(0));
                     frequencyView.stopResponse();
                     break;
+                case PLAY_STATE_PLAYING:
+                    playerPassTime.setText(formatTime(mediaPlayer.getCurrentPosition()));
+                    break;
             }
         }
     };
@@ -109,6 +117,20 @@ public class AudioActivity extends BaseActivity implements MediaPlayer.OnComplet
     @Override
     protected void onInitView(Bundle bundle) {
         ButterKnife.bind(this);
+        mTimer=new Timer();
+        mTimerTask=new TimerTask() {
+            @Override
+            public void run() {
+                if (mediaPlayer != null && currentPlayState == PLAY_STATE_PLAYING) {
+                    if (!isUserSeekingBar) {
+                        rPlayerSbProgress.setProgress(mediaPlayer.getCurrentPosition());
+                        handler.sendEmptyMessage(PLAY_STATE_PLAYING);
+                    }
+
+                }
+            }
+        };
+
     }
 
 
@@ -159,7 +181,7 @@ public class AudioActivity extends BaseActivity implements MediaPlayer.OnComplet
         try {
             mediaPlayer.setDataSource(file);
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mediaPlayer.prepare();
+            mediaPlayer.prepareAsync();
             currentPlayState = PLAY_STATE_PREPARED;
         } catch (Exception e) {
             Log.e(AudioActivity.class.getSimpleName(),"初始化播放器出错："+e.getLocalizedMessage());
@@ -205,7 +227,6 @@ public class AudioActivity extends BaseActivity implements MediaPlayer.OnComplet
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 if (b) {
                     playerPassTime.setText(formatTime(i));
-                    rPlayerSbProgress.setProgress(i);
                 }
             }
 
@@ -218,6 +239,7 @@ public class AudioActivity extends BaseActivity implements MediaPlayer.OnComplet
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (mediaPlayer != null) {
                     mediaPlayer.seekTo(rPlayerSbProgress.getProgress());
+                    rPlayerSbProgress.setProgress(mediaPlayer.getCurrentPosition());
                 }
                 isUserSeekingBar = false;
             }
@@ -250,6 +272,7 @@ public class AudioActivity extends BaseActivity implements MediaPlayer.OnComplet
                             playerTotalTime.setText(formatTime(playTotalTime));
                             playerPassTime.setText(formatTime(0));
                             startMediaPlayer();
+                            mTimer.schedule(mTimerTask, 0, 10);
                             frequencyView.startResponse();
                         }
                         break;
@@ -379,7 +402,11 @@ public class AudioActivity extends BaseActivity implements MediaPlayer.OnComplet
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        releaseMediaPlayer();
+    }
 
     protected void stop(){
         Observable observable=Observable.create(new Observable.OnSubscribe<Boolean>() {
@@ -458,14 +485,7 @@ public class AudioActivity extends BaseActivity implements MediaPlayer.OnComplet
 
     @Override
     public void onBufferingUpdate(MediaPlayer mmediaPlayer, int i) {
-        if (mediaPlayer != null && currentPlayState == PLAY_STATE_PLAYING) {
-            if (!isUserSeekingBar) {
-                final int passTime = mediaPlayer.getCurrentPosition();
-                playerPassTime.setText(formatTime(passTime));
-                rPlayerSbProgress.setProgress(passTime);
-            }
 
-        }
     }
 
     @Override
