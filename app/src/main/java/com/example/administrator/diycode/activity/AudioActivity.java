@@ -41,7 +41,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 @RuntimePermissions
-public class AudioActivity extends BaseActivity implements MediaPlayer.OnCompletionListener,MediaPlayer.OnErrorListener,MediaPlayer.OnPreparedListener,MediaPlayer.OnBufferingUpdateListener {
+public class AudioActivity extends BaseActivity implements MediaPlayer.OnCompletionListener,MediaPlayer.OnErrorListener,MediaPlayer.OnPreparedListener,MediaPlayer.OnBufferingUpdateListener,MediaPlayer.OnSeekCompleteListener {
 
     private static final int ACTION_START_RECORD_AUDIO = 1;
     private static final int ACTION_UPDATE_RECORD_TIME = 2;
@@ -177,6 +177,7 @@ public class AudioActivity extends BaseActivity implements MediaPlayer.OnComplet
         mediaPlayer.setOnErrorListener(this);
         mediaPlayer.setOnPreparedListener(this);
         mediaPlayer.setOnBufferingUpdateListener(this);
+        mediaPlayer.setOnSeekCompleteListener(this);
         mediaPlayer.setLooping(false);
         try {
             mediaPlayer.setDataSource(file);
@@ -287,6 +288,9 @@ public class AudioActivity extends BaseActivity implements MediaPlayer.OnComplet
                 AudioActivityPermissionsDispatcher.openStorageWithPermissionCheck(this);
                 break;
             case R.id.recorder_use:
+                if(mediaPlayer!=null){
+                    mediaPlayer.setVolume(0,100);
+                }
                 break;
         }
     }
@@ -490,6 +494,11 @@ public class AudioActivity extends BaseActivity implements MediaPlayer.OnComplet
 
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
+
+    }
+
+    @Override
+    public void onSeekComplete(MediaPlayer mediaPlayer) {
 
     }
 }
