@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.androidtestdemo.R;
+import com.example.administrator.androidtestdemo.activity.test.UserUnits;
 import com.example.administrator.androidtestdemo.tool.BitmapTools;
 import com.example.logger.Logger;
 import com.example.network_sdk.test.Test1;
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     //启动相册的标示
     public final static int REQUEST_CAMERA = 1;
     private Test1 test1;
+    private UserUnits userUnits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,36 +64,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         Logger.d("MainActivity.onCreate()");
-        test1=new Test1();
+        test1 = new Test1();
+        userUnits = new UserUnits();
         test1.initObservable(MainActivity.this);
 //        test1.initObserverableOne(MainActivity.this);
+        greedaoData();
+        getdata();
     }
 
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
+    private void getdata() {
+        userUnits.querydata();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void greedaoData() {
+        userUnits.insertdata(1, "我是第1个用户");
+        userUnits.insertdata(2, "我是第2个用户");
+        userUnits.insertdata(1, "我是第3个用户");
+        userUnits.insertdata(2, "我是第4个用户");
+        userUnits.insertdata(1, "我是第5个用户");
+        userUnits.insertdata(2, "我是第6个用户");
+        userUnits.insertdata(1, "我是第7个用户");
+        Logger.d("插入数据成功");
 
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
 
@@ -188,24 +185,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.tv_demo,R.id.bt_start_movie,R.id.bt_start_gank,R.id.bt_start_image})
+    @OnClick({R.id.tv_demo, R.id.bt_start_movie, R.id.bt_start_gank, R.id.bt_start_image, R.id.bt_start_other_app})
     public void onViewClicked(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.tv_demo:
                 MainActivityPermissionsDispatcher.openCameraWithPermissionCheck(MainActivity.this);
                 break;
             case R.id.bt_start_movie:
-                startActivity(new Intent(MainActivity.this,MovieActivity.class));
+                startActivity(new Intent(MainActivity.this, MovieActivity.class));
                 break;
-            case  R.id.bt_start_gank:
-                startActivity(new Intent(MainActivity.this,GankActivity.class));
+            case R.id.bt_start_gank:
+//                startActivity(new Intent(MainActivity.this, GankActivity.class));
+                Intent wifiSetIntent=new Intent("android.intent.action.DIYCODE_MAIN_ACTIVITY");
+                startActivity(wifiSetIntent);
                 break;
             case R.id.bt_start_image:
-                startActivity(new Intent(MainActivity.this,FrescoDemoActivity.class));
+                startActivity(new Intent(MainActivity.this, FrescoDemoActivity.class));
+                break;
+            case R.id.bt_start_other_app:
+                MainActivityPermissionsDispatcher.CallWithPermissionCheck(MainActivity.this);
                 break;
         }
 
     }
 
 
+    @NeedsPermission({Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE})
+    void Call() {
+        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:15623069968"));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        startActivity(callIntent);
+
+    }
+
+    @OnShowRationale({Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE})
+    void onCall(final PermissionRequest request) {
+        showRationaleDialog("使用此功能需发访问电话的权限", request);
+    }
 }

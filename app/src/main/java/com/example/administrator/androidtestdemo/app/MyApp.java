@@ -11,6 +11,7 @@ import com.example.Imp.FormatStrategy;
 import com.example.Imp.PrettyFormatStrategy;
 import com.example.administrator.androidtestdemo.BuildConfig;
 import com.example.administrator.androidtestdemo.manager.CrashManager;
+import com.example.administrator.androidtestdemo.manager.GreenDaoManager;
 import com.example.logger.Logger;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.leakcanary.LeakCanary;
@@ -31,6 +32,8 @@ public class MyApp extends Application {
         initLogStore();
         //图片加载
         Fresco.initialize(AppContext);
+        //数据库初始化
+        GreenDaoManager.getInstance();
     }
 
 

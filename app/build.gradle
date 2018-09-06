@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'org.greenrobot.greendao' // apply plugin
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     defaultConfig {
@@ -9,6 +9,12 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    greendao {
+        schemaVersion 1
+        targetGenDir 'src/main/java'
+        daoPackage 'com.example.administrator.androidtestdemo.greedao.gen'
 
     }
     buildTypes {
@@ -142,4 +148,6 @@ dependencies {
     // 下面两个是RxJava 和RxAndroid
     implementation 'io.reactivex:rxjava:1.1.8'
     implementation 'io.reactivex:rxandroid:1.2.1'
+    //数据库操作框架
+    implementation 'org.greenrobot:greendao:3.2.2' // add library
 }

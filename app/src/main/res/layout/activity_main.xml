@@ -36,5 +36,11 @@
          android:layout_height="wrap_content"
          android:text="启动图片加载界面"/>
 
+     <Button
+         android:id="@+id/bt_start_other_app"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="调用其他app的Activity"/>
+
 
 </LinearLayout>
