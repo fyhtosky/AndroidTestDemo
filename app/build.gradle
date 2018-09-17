@@ -17,6 +17,7 @@ android {
         daoPackage 'com.example.administrator.androidtestdemo.greedao.gen'
 
     }
+
     buildTypes {
         release {
             minifyEnabled false

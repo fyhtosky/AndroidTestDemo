@@ -2,10 +2,14 @@ package com.example.administrator.androidtestdemo.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +17,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -23,6 +28,7 @@ import android.widget.Toast;
 import com.example.administrator.androidtestdemo.R;
 import com.example.administrator.androidtestdemo.activity.test.UserUnits;
 import com.example.administrator.androidtestdemo.tool.BitmapTools;
+import com.example.administrator.diycode.activity.DiycodeMainActivity;
 import com.example.logger.Logger;
 import com.example.network_sdk.test.Test1;
 
@@ -45,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
     TextView tvDemo;
     @BindView(R.id.iv_image)
     ImageView ivImage;
-
+    NotificationManager manager;
+    int notification_id;
 
     /**
      * 拍照时存储拍照结果的临时文件
@@ -87,6 +94,22 @@ public class MainActivity extends AppCompatActivity {
         Logger.d("插入数据成功");
 
 
+    }
+
+    private void  showNotifcation(){
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Intent intent = new Intent(MainActivity.this, DiycodeMainActivity.class);
+        PendingIntent ma = PendingIntent.getActivity(MainActivity.this,0,intent,0);
+        Notification notification = new NotificationCompat.Builder(this, "chat")
+                .setContentTitle("收到一条聊天消息")
+                .setContentText("今天中午吃什么？")
+                .setWhen(System.currentTimeMillis())
+                .setContentIntent(ma)
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background))
+                .setAutoCancel(true)
+                .build();
+        manager.notify(1, notification);
     }
 
 
@@ -184,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     @OnClick({R.id.tv_demo, R.id.bt_start_movie, R.id.bt_start_gank, R.id.bt_start_image, R.id.bt_start_other_app})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -195,12 +217,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, MovieActivity.class));
                 break;
             case R.id.bt_start_gank:
-//                startActivity(new Intent(MainActivity.this, GankActivity.class));
+                startActivity(new Intent(MainActivity.this, GankActivity.class));
                 Intent wifiSetIntent=new Intent("android.intent.action.DIYCODE_MAIN_ACTIVITY");
                 startActivity(wifiSetIntent);
                 break;
             case R.id.bt_start_image:
-                startActivity(new Intent(MainActivity.this, FrescoDemoActivity.class));
+//                startActivity(new Intent(MainActivity.this, FrescoDemoActivity.class));
+                showNotifcation();
                 break;
             case R.id.bt_start_other_app:
                 MainActivityPermissionsDispatcher.CallWithPermissionCheck(MainActivity.this);
@@ -223,5 +246,11 @@ public class MainActivity extends AppCompatActivity {
     @OnShowRationale({Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE})
     void onCall(final PermissionRequest request) {
         showRationaleDialog("使用此功能需发访问电话的权限", request);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

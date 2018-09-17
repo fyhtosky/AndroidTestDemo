@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.administrator.BluetoothBLE.BlueToothActivity">
+    <Button
+         android:id="@+id/open_blueTooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="打开蓝牙"/>
+    <Button
+        app:layout_constraintLeft_toRightOf="@+id/open_blueTooth"
+        android:id="@+id/search_blueTooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="搜索蓝牙设备"/>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/open_blueTooth"
+        android:id="@+id/show_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""/>
+</android.support.constraint.ConstraintLayout>
