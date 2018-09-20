@@ -20,8 +20,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <!-- 接收蓝牙权限 -->
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <!-- 接收开机广播权限 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
@@ -76,14 +76,24 @@
         </receiver>
 
         <activity android:name=".activity.WebViewActivity">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name="com.example.administrator.BluetoothBLE.BlueToothActivity"
+            android:theme="@style/AppTheme.Launcher">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
 
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name="com.example.administrator.BluetoothBLE.BlueToothActivity"
-            android:theme="@style/AppTheme.Launcher">
+        <activity android:name=".activity.UploadImageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
