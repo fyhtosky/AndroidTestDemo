@@ -1,14 +1,21 @@
 package com.example.administrator.BluetoothBLE;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
+import android.os.Trace;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -22,7 +29,12 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class BlueToothActivity extends AppCompatActivity {
 
     private ProgressDialog mProgressDialog;
@@ -36,16 +48,26 @@ public class BlueToothActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            Trace.beginSection("BlueTooth");
+        }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_blue_tooth);
         ButterKnife.bind(this);
         init();
         Configuration config = getResources().getConfiguration();
         int smallestScreenWidth = config.smallestScreenWidthDp;
         Log.i("BlueToothActivity","smallest width : "+ smallestScreenWidth);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            Trace.endSection();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            reportFullyDrawn();
+        }
+        BlueToothActivityPermissionsDispatcher.writeWithPermissionCheck(this);
     }
 
     private void init() {
+        Debug.startMethodTracing("TestApp");
         //初始化
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         foundDeviceBroadcastReceiver=new FoundDeviceBroadcastReceiver();
@@ -113,6 +135,21 @@ public class BlueToothActivity extends AppCompatActivity {
         });
     }
 
+    @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    void write() {
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        BlueToothActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @OnShowRationale({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    void doWrite(final PermissionRequest request) {
+        showRationaleDialog("使用此功能需要写入分析日志的权限", request);
+    }
+
 
     /**
      * Created by kqw on 2016/8/2.
@@ -168,5 +205,37 @@ public class BlueToothActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(foundDeviceBroadcastReceiver);
+        Debug.stopMethodTracing();
+    }
+
+    /**
+     * 显示权限的对话框
+     *
+     * @param messageResId
+     * @param request
+     */
+    private void showRationaleDialog(String messageResId, final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogInterface dialog, int which) {
+                        request.proceed();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogInterface dialog, int which) {
+                        request.cancel();
+                    }
+                })
+                .setCancelable(false)
+                .setMessage(messageResId)
+                .show();
     }
 }

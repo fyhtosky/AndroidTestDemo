@@ -82,7 +82,8 @@
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name="com.example.administrator.BluetoothBLE.BlueToothActivity">
+        <activity android:name="com.example.administrator.BluetoothBLE.BlueToothActivity"
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
