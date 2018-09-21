@@ -4,6 +4,7 @@ import com.example.network_sdk.base.BaseModel;
 import com.example.network_sdk.base.BasePresenter;
 import com.example.network_sdk.base.BaseView;
 
+import okhttp3.ResponseBody;
 import rx.Observable;
 
 public interface UploadImageContract {

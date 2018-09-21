@@ -2,6 +2,7 @@ package com.example.network_sdk.downLoad;
 
 import android.util.Log;
 
+import okhttp3.ResponseBody;
 import rx.Subscriber;
 
 public class UploadImagePresenter extends UploadImageContract.Presenter {
@@ -21,7 +22,8 @@ public class UploadImagePresenter extends UploadImageContract.Presenter {
 
             @Override
             public void onNext(uploadImageReturnBean uploadImageReturnBean) {
-//                progressRequestBody.setListener(new ProgressRequestBody.Listener() {
+
+//                requestBody.setListener(new ProgressRequestBody.Listener() {
 //                    @Override
 //                    public void onRequestProgress(long bytesWritten, long contentLength, long networkSpeed) {
 //                        mView.uploadProgress(bytesWritten, contentLength, bytesWritten * 1.0f / contentLength, networkSpeed);
