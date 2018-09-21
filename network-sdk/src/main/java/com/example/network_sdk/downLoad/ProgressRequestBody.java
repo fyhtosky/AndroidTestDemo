@@ -1,5 +1,7 @@
 package com.example.network_sdk.downLoad;
 
+import android.util.Log;
+
 import java.io.IOException;
 
 import okhttp3.MediaType;
@@ -70,12 +72,13 @@ public class ProgressRequestBody extends RequestBody {
 
             long curTime = System.currentTimeMillis();
             //每100毫秒刷新一次数据
-            if (curTime - lastRefreshUiTime >=100 || bytesWritten == contentLength) {
+            if (curTime - lastRefreshUiTime >=10 || bytesWritten == contentLength) {
                 //计算下载速度
                 long diffTime = (curTime - lastRefreshUiTime) / 1000;
                 if (diffTime == 0) diffTime += 1;
                 long diffBytes = bytesWritten - lastWriteBytes;
                 long networkSpeed = diffBytes / diffTime;
+                Log.i("ProgressRequestBody","当前的进度："+bytesWritten+";总文件大小："+contentLength+";进度："+bytesWritten * 1.0f / contentLength+";上传的速度："+networkSpeed);
                 if (listener != null) listener.onRequestProgress(bytesWritten, contentLength, networkSpeed);
 
                 lastRefreshUiTime = System.currentTimeMillis();

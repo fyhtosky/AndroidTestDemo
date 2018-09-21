@@ -74,6 +74,6 @@ public class UploadImageActivity extends BaseActivity<UploadImageModel, UploadIm
     @OnClick(R.id.start)
     public void onViewClicked() {
 
-        mPresenter.uploadImage("/storage/sc.ping","headerValue1");
+        mPresenter.uploadImage("/sdcard/sc.png","headerValue1");
     }
 }

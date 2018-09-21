@@ -38,7 +38,7 @@ public interface UploadImageContract {
     }
 
     interface Model extends BaseModel {
-        Observable<ProgressRequestBody> uploadUserFile(String url, String des);
+        Observable<uploadImageReturnBean> uploadUserFile(String url, String des);
     }
     abstract class Presenter extends BasePresenter<UploadImageContract.View,UploadImageContract.Model> {
         public abstract void  uploadImage(String url,String des);

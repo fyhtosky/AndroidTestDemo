@@ -28,6 +28,7 @@ public class RetrofitFactory<Service> {
         return (Class<Service>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
+
     @NonNull
     public static Retrofit getRetrofit() {
 
@@ -95,6 +96,7 @@ public class RetrofitFactory<Service> {
 
                 OkHttpClient.Builder builder = new OkHttpClient.Builder()
                         .addInterceptor(interceptor)
+                        .hostnameVerifier(HttpsUtils.UnSafeHostnameVerifier)
                         .connectTimeout(10, TimeUnit.SECONDS)
                         .readTimeout(15, TimeUnit.SECONDS)
                         .writeTimeout(15, TimeUnit.SECONDS)

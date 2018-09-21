@@ -9,8 +9,8 @@ import rx.Observable;
 public interface UploadApi {
     //上传图片和描述
     @Multipart
-    @POST("上传的地址")
-    Observable<ProgressRequestBody> uploadUserFile(
+    @POST("/app/uploadResources.action")
+    Observable<uploadImageReturnBean> uploadUserFile(
             @Part("header1") RequestBody description,
             @Part("file")RequestBody img
     );
