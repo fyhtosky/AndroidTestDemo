@@ -6,6 +6,10 @@ import android.widget.TextView;
 
 import com.example.administrator.androidtestdemo.R;
 import com.example.administrator.androidtestdemo.activity.base.BaseActivity;
+import com.example.administrator.androidtestdemo.chain.ChainOfResponsibilityClient;
+import com.example.administrator.androidtestdemo.chain.CustomInterceptor;
+import com.example.administrator.androidtestdemo.chain.Request;
+import com.example.administrator.androidtestdemo.chain.Result;
 import com.example.network_sdk.base.BaseView;
 import com.example.network_sdk.downLoad.UploadImageContract;
 import com.example.network_sdk.downLoad.UploadImageModel;
@@ -34,6 +38,17 @@ public class UploadImageActivity extends BaseActivity<UploadImageModel, UploadIm
 
     @Override
     protected void onEvent() {
+        Request request = new Request.Builder()
+                .name("张三")
+                .days(5)
+                .reason("事假")
+                .build();
+        ChainOfResponsibilityClient client = new ChainOfResponsibilityClient();
+        //添加拦截器
+        client.addRatifys(new CustomInterceptor());
+        Result result = client.execute(request);
+        System.out.println("结果：" + result.toString());
+
 
     }
 
