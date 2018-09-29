@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.example.Imp.AndroidLogAdapter;
 import com.example.Imp.DiskLogAdapter;
@@ -17,8 +19,16 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.leakcanary.LeakCanary;
 
 
-public class MyApp extends Application {
+public class MyApp extends MultiDexApplication {
     public static Context AppContext;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

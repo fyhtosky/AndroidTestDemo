@@ -13,7 +13,8 @@ public class ChainOfResponsibilityClient {
 
     }
         /**
-         * 方法描述：为了展示“责任链模式”的真正的迷人之处（可扩展性），在这里构造该方法以便添加自定义的“责任人”
+         * 方法描述：为了展示“责任链模式”的真正的迷人之处（可扩展性），
+         * 在这里构造该方法以便添加自定义的“责任人”
          * @param ratify
          * */
         public void addRatifys(Call ratify) {

@@ -1,5 +1,8 @@
 package com.example.administrator.androidtestdemo.chain;
 
+/**
+ * 处理之后的响应
+ */
 public class Result {
     public boolean isRatify;
     public String info;

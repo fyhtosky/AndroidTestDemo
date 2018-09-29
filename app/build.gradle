@@ -9,7 +9,7 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        multiDexEnabled true
     }
     greendao {
         schemaVersion 1
@@ -151,4 +151,7 @@ dependencies {
     implementation 'io.reactivex:rxandroid:1.2.1'
     //数据库操作框架
     implementation 'org.greenrobot:greendao:3.2.2' // add library
+
+    //分包
+    implementation 'com.android.support:multidex:1.0.1'
 }

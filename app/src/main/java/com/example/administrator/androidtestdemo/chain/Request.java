@@ -2,6 +2,9 @@ package com.example.administrator.androidtestdemo.chain;
 
 import android.util.Log;
 
+/**
+ * 请求体
+ */
 public class Request {
     final String name;
     final String reason;

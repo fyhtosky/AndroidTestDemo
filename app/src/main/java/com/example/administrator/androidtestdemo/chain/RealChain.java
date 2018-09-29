@@ -9,13 +9,9 @@ public class RealChain implements Call.Chain {
     public int index;
     /**
      * 构造方法
-     * @param ratifyList
-     * *
-     * Ratify接口的实现类集合
-     * * @param request      *
-     * 具体的请求Request实例
-     * * @param index      *
-     * 已经处理过该request的责任人数量
+     * @param ratifyList Ratify接口的实现类集合
+     * @param request 具体的请求Request实例
+     * @param index 已经处理过该request的责任人数量
      * */
     public RealChain(List<Call> ratifyList, Request request, int index) {
         this.ratifyList = ratifyList;
@@ -31,12 +27,12 @@ public class RealChain implements Call.Chain {
 
     @Override
     public Result proceed(Request request) {
-        Result proceed = null;
+        Result result = null;
         if (ratifyList.size() > index) {
             RealChain realChain = new RealChain(ratifyList, request, index + 1);
             Call call = ratifyList.get(index);
-            proceed = call.deal(realChain);          }
-            return proceed;
+            result = call.deal(realChain);          }
+            return result;
 
     }
 }
