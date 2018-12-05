@@ -10,13 +10,23 @@ android {
         versionName rootProject.ext.android.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        //必须要保证所有的flavor 都属于同一个维度
+        flavorDimensions "default"
     }
     greendao {
+        //数据库版本号
         schemaVersion 1
+        //设置DaoMaster 、DaoSession、Dao目录
         targetGenDir 'src/main/java'
+        ////设置DaoMaster 、DaoSession、Dao包名
         daoPackage 'com.example.administrator.androidtestdemo.greedao.gen'
+        //设置生成单元测试目录
+        //    targetGenDirTest
+        //设置自动生成单元测试用例
+        //    generateTests
 
     }
+
 
     buildTypes {
         release {
@@ -27,15 +37,35 @@ android {
 
         }
     }
+    /* 友盟多渠道打包 */
+    productFlavors {
+        yingyongbao {}
+        wandoujia {}
+        baidu {}
+        c360 {}
+        uc {}
+        xiaomi {}
+        huawei {}
+        c91shouji {}
+        meizu {}
+        productFlavors.all { flavor ->
+            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+        }
+    }
+
+
+
 //配置自定义打包名称
     applicationVariants.all { variant ->
         variant.outputs.all {
             def fileName
-            def formattedDate = new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
+            def formattedDate = new Date().format("yy-MM-dd", TimeZone.getTimeZone("UTC"))
             if (variant.buildType.name.equals('release')) {
-                fileName = "${variant.mergedFlavor.versionName}_release_${formattedDate}.apk"
+                // 输出apk名称为wooyun_v1.0_wandoujia.apk
+                fileName="youmeng${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+//                fileName = "youmeng${variant.mergedFlavor.versionName}_release_${formattedDate}.apk"
             } else if (variant.buildType.name.equals('debug')) {
-                fileName = "${variant.mergedFlavor.versionName}_debug_${formattedDate}.apk"
+                fileName = "youmeng${variant.mergedFlavor.versionName}_debug_${formattedDate}.apk"
             }
             outputFileName = fileName;
         }
@@ -84,7 +114,7 @@ android {
         }
     }
     task printMap {
-        def map = ['name': "张三", 'age': 23]
+        def map = ['name': "zhangsan", 'age': 23]
         map.each {
             println "Key:${it.key}, value: ${it.value}"
         }

@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class AnimatedPieView extends View {
@@ -19,6 +20,9 @@ public class AnimatedPieView extends View {
     private RectF drawBounds;
     private float centerX;
     private float centerY;
+
+    private float touchX = -1;
+    private float touchY = -1;
 
     RectF mDrawRectf = new RectF();
 
@@ -108,5 +112,23 @@ public class AnimatedPieView extends View {
         drawBounds.set(getPaddingLeft(),getPaddingTop(),getWidth()-getPaddingRight(),getHeight()-getPaddingBottom());
         centerX=drawBounds.width()/2;
         centerY=drawBounds.height()/2;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                touchX = event.getX();
+                touchY = event.getY();
+                return true;
+            case MotionEvent.ACTION_UP:
+//                PieInfoWrapper touchWrapper = pointToPieInfoWrapper(touchX, touchY);
+//                if (touchWrapper == null) return false;
+//                handleUp(touchWrapper);
+
+                return true;
+        }
+
+        return super.onTouchEvent(event);
     }
 }

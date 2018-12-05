@@ -3,7 +3,7 @@
 
     <item android:drawable="@color/white"/>
     <item>
-        <bitmap android:src="@drawable/leak_canary_icon"
+        <bitmap android:src="@drawable/ic_launcher_background"
             android:gravity="top|right"/>
     </item>
 

@@ -1,17 +1,22 @@
 package com.example.administrator.androidtestdemo.tool;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.provider.MediaStore;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -210,6 +215,106 @@ public class BitmapTools {
             e.printStackTrace();
         }
         return degree;
+    }
+    /**
+     * 质量压缩
+     * 设置bitmap options属性，降低图片的质量，像素不会减少
+     * 第一个参数为需要压缩的bitmap图片对象，第二个参数为压缩后图片保存的位置
+     * 设置options 属性0-100，来实现压缩
+     *
+     * @param bmp
+     * @param file
+     */ public static void qualityCompress(Bitmap bmp, File file) {
+        // 0-100 100为不压缩
+        int quality = 20;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        // 把压缩后的数据存放到baos中
+        bmp.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(baos.toByteArray());
+            fos.flush();
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+        /**
+         * 4.尺寸压缩（通过缩放图片像素来减少图片占用内存大小）
+         * @param bmp
+         * @param file
+         */
+        public static void sizeCompress(Bitmap bmp, File file) {
+             // 尺寸压缩倍数,值越大，图片尺寸越小
+            int ratio = 8;
+            // 压缩Bitmap到对应尺寸
+            Bitmap result = Bitmap.createBitmap(bmp.getWidth() / ratio, bmp.getHeight() / ratio, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(result);
+            Rect rect = new Rect(0, 0, bmp.getWidth() / ratio, bmp.getHeight() / ratio);
+            canvas.drawBitmap(bmp, null, rect, null);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            // 把压缩后的数据存放到baos中
+            result.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            try {
+                FileOutputStream fos = new FileOutputStream(file);
+                fos.write(baos.toByteArray());
+                fos.flush();
+                fos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+         }
+
+
+
+
+
+
+    /**
+     * 压缩图片使用,采用BitmapFactory.decodeFile。这里是尺寸压缩
+     * @param context
+     * @param imageUri
+     * @return
+     */
+    public Bitmap bitmapFactory(Context context,Uri imageUri){
+        String[] filePathColumns = {MediaStore.Images.Media.DATA};
+        Cursor c = context.getContentResolver().query(imageUri, filePathColumns, null, null, null);
+        c.moveToFirst();
+        int columnIndex = c.getColumnIndex(filePathColumns[0]);
+        String imagePath = c.getString(columnIndex);
+        c.close();
+
+        // 配置压缩的参数
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true; //获取当前图片的边界大小，而不是将整张图片载入在内存中，避免内存溢出
+        BitmapFactory.decodeFile(imagePath, options);
+        options.inJustDecodeBounds = false;
+        ////inSampleSize的作用就是可以把图片的长短缩小inSampleSize倍，所占内存缩小inSampleSize的平方
+        options.inSampleSize = caculateSampleSize(options,500,50);
+        Bitmap bm = BitmapFactory.decodeFile(imagePath, options); // 解码文件
+         return  bm;
+    }
+
+    /**
+     * 计算出所需要压缩的大小
+     * @param options
+     * @param reqWidth  我们期望的图片的宽，单位px
+     * @param reqHeight 我们期望的图片的高，单位px
+     * @return
+     */
+    private int caculateSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        int sampleSize = 1;
+        int picWidth = options.outWidth;
+        int picHeight = options.outHeight;
+        if (picWidth > reqWidth || picHeight > reqHeight) {
+            int halfPicWidth = picWidth / 2;
+            int halfPicHeight = picHeight / 2;
+            while (halfPicWidth / sampleSize > reqWidth || halfPicHeight / sampleSize > reqHeight) {
+                sampleSize *= 2;
+            }
+        }
+        return sampleSize;
     }
 
 
